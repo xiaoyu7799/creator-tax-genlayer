@@ -1,6 +1,6 @@
 {
   "title": "Counter-evidence — Thin Sketch (challenger claim, earlier creation)",
   "work": "Thin Sketch",
-  "challenger": "0x830704c3Eb30DD2Ada6D2ea49Be50977dcd70cb2",
-  "report": "The challenger 0x830704c3Eb30DD2Ada6D2ea49Be50977dcd70cb2 created 'Thin Sketch' on 2026-09-15. The creation is anchored by a signed message: the challenger signed the text 'Thin Sketch by 0x830704c3Eb30DD2Ada6D2ea49Be50977dcd70cb2 2026-09-15' with the challenger wallet. The work was first published on 2026-09-16 in 'Sketchbook Weekly', listing the challenger as the artist. The original registration evidence gives no date and no anchor at all, while this counter-evidence proves an earlier creation with both an explicit date and a verifiable anchor."
+  "challenger": "0x27645f863a4fbE3a6Cb13707546B55D8Be77125a",
+  "report": "The challenger 0x27645f863a4fbE3a6Cb13707546B55D8Be77125a created 'Thin Sketch' on 2026-09-15. The creation is anchored by a signed message: the challenger signed the text 'Thin Sketch by 0x27645f863a4fbE3a6Cb13707546B55D8Be77125a 2026-09-15' with the challenger wallet. The work was first published on 2026-09-16 in 'Sketchbook Weekly', listing the challenger as the artist. The original registration evidence gives no date and no anchor at all, while this counter-evidence proves an earlier creation with both an explicit date and a verifiable anchor."
 }
