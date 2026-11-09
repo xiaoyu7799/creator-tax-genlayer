@@ -384,11 +384,11 @@ const creditRAfterTransfers = await read(clientR, "get_credit", [recipient.addre
 console.log("Work 0 after transfers:", JSON.stringify(work0AfterTransfers));
 console.log("Work 1 after transfers:", JSON.stringify(work1AfterTransfers));
 console.log("Recipient credit after transfers:", JSON.stringify(creditRAfterTransfers));
-if (work0AfterTransfers.tax_pending[creator.address.toLowerCase()] !== String(17n * GEN / 100n))
+if (BigInt(work0AfterTransfers.tax_pending[creator.address.toLowerCase()]) !== 17n * GEN / 100n)
   throw new Error("work 0 pending tribute is not 0.17 GEN: " + JSON.stringify(work0AfterTransfers.tax_pending));
-if (work1AfterTransfers.tax_pending[creator.address.toLowerCase()] !== String(25n * GEN / 100n))
+if (BigInt(work1AfterTransfers.tax_pending[creator.address.toLowerCase()]) !== 25n * GEN / 100n)
   throw new Error("work 1 pending tribute is not 0.25 GEN");
-if (creditRAfterTransfers.credit_wei !== String(4158n * GEN / 100n))
+if (BigInt(creditRAfterTransfers.credit_wei) !== 4158n * GEN / 100n)
   throw new Error("recipient credit is not 41.58 GEN: " + JSON.stringify(creditRAfterTransfers));
 
 // --- 6. Creator claims pending tribute for works 0 and 1.
@@ -478,7 +478,7 @@ await write(clientD, "transfer_with_tribute", [1n, recipient.address], "transfer
 const work1AfterReroute = await read(clientA, "get_work", [1n]);
 console.log("Work 1 after re-route transfer:", JSON.stringify(work1AfterReroute));
 const rerouteCreator = work1Flipped ? challenger.address.toLowerCase() : creator.address.toLowerCase();
-if (work1AfterReroute.tax_pending[rerouteCreator] !== String(10n * GEN / 100n))
+if (BigInt(work1AfterReroute.tax_pending[rerouteCreator]) !== 10n * GEN / 100n)
   throw new Error("re-routed tribute is not 0.10 GEN for the current creator");
 if (work1Flipped) {
   await write(clientB, "claim_credit", [1n], "claim_credit work 1 by new creator (0.10 GEN)");
@@ -539,7 +539,7 @@ const rateApproved = work0Rate1.rate_proposal.outcome === "APPROVE";
 await write(clientD, "transfer_with_tribute", [0n, recipient.address], `transfer_with_tribute work 0: 10 GEN at ${work0Rate1.rate_bp}bp (D -> R)`, 10n * GEN);
 const work0AfterRateTransfer = await read(clientA, "get_work", [0n]);
 const expectedTribute1 = (10n * GEN * BigInt(work0Rate1.rate_bp)) / 10000n;
-if (work0AfterRateTransfer.tax_pending[creator.address.toLowerCase()] !== String(expectedTribute1))
+if (BigInt(work0AfterRateTransfer.tax_pending[creator.address.toLowerCase()]) !== expectedTribute1)
   throw new Error("tribute after rate change is not as expected: " + JSON.stringify(work0AfterRateTransfer.tax_pending));
 console.log("Work 0 after rate-change transfer:", JSON.stringify(work0AfterRateTransfer));
 // Second proposal: 0bp with no justification -> expect REJECT, rate unchanged.
@@ -554,7 +554,7 @@ const rateRejected = work0Rate2.rate_proposal.outcome === "REJECT";
 await write(clientD, "transfer_with_tribute", [0n, recipient.address], `transfer_with_tribute work 0: 10 GEN at ${work0Rate2.rate_bp}bp (D -> R)`, 10n * GEN);
 const work0AfterRateTransfer2 = await read(clientA, "get_work", [0n]);
 const expectedTribute2 = expectedTribute1 + (10n * GEN * BigInt(work0Rate2.rate_bp)) / 10000n;
-if (work0AfterRateTransfer2.tax_pending[creator.address.toLowerCase()] !== String(expectedTribute2))
+if (BigInt(work0AfterRateTransfer2.tax_pending[creator.address.toLowerCase()]) !== expectedTribute2)
   throw new Error("tribute after second rate transfer is not as expected: " + JSON.stringify(work0AfterRateTransfer2.tax_pending));
 console.log("Work 0 after second rate transfer:", JSON.stringify(work0AfterRateTransfer2));
 
@@ -754,7 +754,7 @@ const lines = [
   "Explorer: https://explorer-studio.genlayer.com/address/" + address,
   "Checked at: " + evidence.checkedAt,
   "",
-  "An earlier deployment of this same source (`0xFB0d95D140Eb5f44364a900F1d315546A466aDf7`, deploy tx `0xffbcd4ff73c8d0c66ce6879b2f482f5d537478053f7ec043147ce985edd32ac5`) was abandoned before any adjudication ran: the flow stopped on a transient RPC gateway failure (the gateway answered a read with an HTML error page), and the flow's ephemeral accounts were lost with that process. Its 50 GEN of faucet testnet GEN stays locked there. This deployment replaces it; the source is unchanged.",
+  "Two earlier deployments of this same source were abandoned: `0xFB0d95D140Eb5f44364a900F1d315546A466aDf7` (deploy tx `0xffbcd4ff73c8d0c66ce6879b2f482f5d537478053f7ec043147ce985edd32ac5`), stopped by a transient RPC gateway failure before any adjudication ran, and `0x2292F00D352A7166689F16C28462ab327EA50C90` (deploy tx `0x371c10f5e51989ddfc5d17b1da47b8264b76f3c66ea414a5a5f014ff698d4a15`), stopped by a flow-script assertion bug (a Number-vs-String comparison) after funding and the first transfers; both runs' ephemeral accounts were lost with their processes. Their faucet testnet GEN (50 GEN + 92 GEN) stays locked there. This deployment replaces them; the source is unchanged.",
   "",
   "## Transactions (all FINALIZED)",
   "",
