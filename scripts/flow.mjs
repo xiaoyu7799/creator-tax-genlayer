@@ -124,14 +124,39 @@ async function write(client, functionName, args, label, value = 0n) {
 }
 
 async function read(client, functionName, args) {
-  const raw = await client.readContract({ address, functionName, args });
-  if (typeof raw === "string") {
-    try { return JSON.parse(raw); } catch { return raw; }
+  // The Studionet gateway occasionally answers a read with an HTML
+  // error page instead of JSON (transient). Retry the read instead of
+  // letting one blip kill the run.
+  let lastErr = null;
+  for (let i = 1; i <= 6; i++) {
+    try {
+      const raw = await client.readContract({ address, functionName, args });
+      if (typeof raw === "string") {
+        try { return JSON.parse(raw); } catch { return raw; }
+      }
+      return raw;
+    } catch (err) {
+      lastErr = err;
+      console.log(`read ${functionName} attempt ${i} failed (transient?): ${String(err?.message ?? err).slice(0, 200)}`);
+      if (i < 6) await new Promise((r) => setTimeout(r, 10000));
+    }
   }
-  return raw;
+  throw lastErr;
 }
 
-const eoaBalance = async (client, addr) => (await client.getBalance({ address: addr })).toString();
+const eoaBalance = async (client, addr) => {
+  let lastErr = null;
+  for (let i = 1; i <= 6; i++) {
+    try {
+      return (await client.getBalance({ address: addr })).toString();
+    } catch (err) {
+      lastErr = err;
+      console.log(`getBalance attempt ${i} failed (transient?): ${String(err?.message ?? err).slice(0, 200)}`);
+      if (i < 6) await new Promise((r) => setTimeout(r, 10000));
+    }
+  }
+  throw lastErr;
+};
 
 /* A call that must be rejected. Records how it was rejected (client-side
  * throw, or an included transaction whose receipt carries the error) and
@@ -620,7 +645,7 @@ const creditBFinal = await read(clientB, "get_credit", [challenger.address]);
 const statsA = await read(clientA, "get_creator_stats", [creator.address]);
 const statsB = await read(clientB, "get_creator_stats", [challenger.address]);
 const leaderboard = await read(clientA, "get_leaderboard", [10n]);
-const contractBalance = await clientA.getBalance({ address });
+const contractBalance = BigInt(await eoaBalance(clientA, address));
 
 console.log("Final read-back:");
 console.log(" works:", JSON.stringify(finalWorks));
@@ -728,6 +753,8 @@ const lines = [
   "Network: Stable Studionet (chain 61999). Contract: `" + address + "`",
   "Explorer: https://explorer-studio.genlayer.com/address/" + address,
   "Checked at: " + evidence.checkedAt,
+  "",
+  "An earlier deployment of this same source (`0xFB0d95D140Eb5f44364a900F1d315546A466aDf7`, deploy tx `0xffbcd4ff73c8d0c66ce6879b2f482f5d537478053f7ec043147ce985edd32ac5`) was abandoned before any adjudication ran: the flow stopped on a transient RPC gateway failure (the gateway answered a read with an HTML error page), and the flow's ephemeral accounts were lost with that process. Its 50 GEN of faucet testnet GEN stays locked there. This deployment replaces it; the source is unchanged.",
   "",
   "## Transactions (all FINALIZED)",
   "",
