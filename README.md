@@ -4,13 +4,14 @@ Creator trading-tax sponsorship on GenLayer: every sponsorship transfer pays a s
 
 - **What it does:** register a creative work with authorship evidence; sponsor it with real testnet GEN (tribute split by integer division, remainder to the recipient); dispute the attribution with counter-evidence (the second evaluation reads both evidence sets, so a flip has a real mechanism behind it); propose a rate change between 0 / 100 / 200 basis points. Tribute and rewards are pull-paid.
 - **Network:** Stable Studionet only (chain 61999), RPC `https://studio.genlayer.com/api`.
-- **Contract:** see `deployment.json` for the address, deployment transaction, and source SHA-256.
+- **Contract:** `0xCc792333d8931791Cad14EB3dc473e666B40b28F` (see `deployment.json` for the deployment transaction and source SHA-256)
 
 ## Deployment
 
-- Contract: `deployment.json` (`contractAddress`)
-- Explorer: `https://explorer-studio.genlayer.com/address/<address in deployment.json>`
-- Source: `contracts/creator_tax.py` (SHA-256 in `deployment.json`, verified equal to the deployed code)
+- Contract: `0xCc792333d8931791Cad14EB3dc473e666B40b28F`
+- Deployment transaction: `0xaa455c9dc76c83d97519c7da74409ea0b924165338a41503e6304903d0cdc4d4` (FINALIZED)
+- Explorer: `https://explorer-studio.genlayer.com/address/0xCc792333d8931791Cad14EB3dc473e666B40b28F`
+- Source: `contracts/creator_tax.py` (SHA-256 `a6c8eaeea4e814fc2dea98736eac0493848043f0e2e92c73655e18dbafdd4166`, verified equal to the deployed code)
 
 ## How it works
 

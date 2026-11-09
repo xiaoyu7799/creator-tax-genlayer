@@ -1,0 +1,18 @@
+{
+  "network": "Stable Studionet",
+  "chainId": 61999,
+  "rpcUrl": "https://studio.genlayer.com/api",
+  "explorer": "https://explorer-studio.genlayer.com/address/0xCc792333d8931791Cad14EB3dc473e666B40b28F",
+  "studio": "https://studio.genlayer.com/?import-contract=0xCc792333d8931791Cad14EB3dc473e666B40b28F",
+  "contractAddress": "0xCc792333d8931791Cad14EB3dc473e666B40b28F",
+  "deployTxHash": "0xaa455c9dc76c83d97519c7da74409ea0b924165338a41503e6304903d0cdc4d4",
+  "deployer": "0x673315d2e55DC101D7414CAF66F5Ac1835412c0A",
+  "fundTxHash": "0xf475f53c4bc2de8e74c43d07fed5494c013c2e782f563ff92d261dea4196e6d7",
+  "contractFile": "contracts/creator_tax.py",
+  "contractSha256": "a6c8eaeea4e814fc2dea98736eac0493848043f0e2e92c73655e18dbafdd4166",
+  "deployedCodeSha256": "a6c8eaeea4e814fc2dea98736eac0493848043f0e2e92c73655e18dbafdd4166",
+  "deployedCodeMatchesSource": true,
+  "sourceCommit": "afd58b99dfd551706f71bbde273c1ed02c7a9592",
+  "deployedAt": "2026-11-09T14:52:19.253Z",
+  "receiptStatus": "FINALIZED"
+}
